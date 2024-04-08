@@ -56,13 +56,13 @@ mkdir -p /home/shared/clickhouse
 # Create user directories and link them to data_dir
 mkdir -p /home/shared/clickhouse/user_files
 ln -s /home/shared/clickhouse/user_files $data_dir/user_files
-chown "$app:$app" "$data_dir/user_files"
+chown "$app:$app" "/home/shared/clickhouse/user_files"
 mkdir -p /home/shared/clickhouse/user_defined
 ln -s /home/shared/clickhouse/user_defined $data_dir/user_defined
-chown "$app:$app" "$data_dir/user_files"
+chown "$app:$app" "/home/shared/clickhouse/user_defined"
 mkdir -p /home/shared/clickhouse/user_scripts
 ln -s /home/shared/clickhouse/user_scripts $data_dir/user_scripts
-chown "$app:$app" "$data_dir/user_files"
+chown "$app:$app" "/home/shared/clickhouse/user_scripts"
 
 chmod -R 777 /home/shared/clickhouse
 
