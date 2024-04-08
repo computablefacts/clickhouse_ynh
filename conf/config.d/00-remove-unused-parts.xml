@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<yandex>
+    <mysql_port remove="remove">9004</mysql_port>
+    <interserver_http_port remove="remove">9009</interserver_http_port>
+    <interserver_http_host remove="remove">example.yandex.ru</interserver_http_host>
+    <grpc remove="remove"></grpc>
+    <openSSL remove="remove"></openSSL>
+    <ldap_servers remove="remove"></ldap_servers>
+    <remote_servers remove="remove"></remote_servers>
+</yandex>

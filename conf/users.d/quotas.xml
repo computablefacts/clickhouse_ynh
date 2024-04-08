@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<yandex>
+    <quotas>
+        <unlimited>
+            <interval>
+                <duration>3600</duration>
+                <queries>0</queries>
+                <errors>0</errors>
+                <result_rows>0</result_rows>
+                <read_rows>0</read_rows>
+                <execution_time>0</execution_time>
+            </interval>
+        </unlimited>
+        <limited>
+            <!-- 1000 queries per hour -->
+            <interval>
+                <duration>3600</duration>
+                <queries>1000</queries>
+            </interval>
+            <!-- 10000 queries per 24 hours -->
+            <interval>
+                <duration>86400</duration>
+                <queries>10000</queries>
+            </interval>
+        </limited>
+        <default remove="remove"></default>
+    </quotas>
+</yandex>

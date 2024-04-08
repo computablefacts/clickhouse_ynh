@@ -27,29 +27,34 @@ ynh_script_progression --message="Removing system configurations related to $app
 
 ### This should be a symetric version of what happens in the install script
 
+ynh_systemd_action --service_name="clickhouse-server" --action="stop" --log_path="/var/log/clickhouse-server/clickhouse-server.log"
+
 # Remove the service from the list of services known by YunoHost (added from `yunohost service add`)
 if ynh_exec_warn_less yunohost service status "$app" >/dev/null; then
     ynh_script_progression --message="Removing $app service integration..." --weight=1
     yunohost service remove "$app"
 fi
 
-ynh_remove_fail2ban_config
-
-ynh_remove_logrotate
-
-ynh_remove_systemd_config
-
 ynh_remove_nginx_config
-
-ynh_remove_fpm_config
 
 # Remove other various files specific to the app... such as :
 
 ynh_secure_remove --file="/etc/cron.d/$app"
 
-ynh_secure_remove --file="/etc/$app"
 
-ynh_secure_remove --file="/var/log/$app"
+# See: https://github.com/ClickHouse/ClickHouse/issues/38877#issuecomment-1590562695
+for file in /usr/bin/clickhouse*; do
+    # Vérifier si le fichier existe
+    if [ -e "$file" ]; then
+        # Supprimer le fichier
+        ynh_secure_remove --file="$file"
+    fi
+done
+ynh_secure_remove --file="/etc/clickhouse-server"
+ynh_secure_remove --file="/var/log/clickhouse-server"
+ynh_secure_remove --file="/var/run/clickhouse-server"
+ynh_secure_remove --file="/etc/security/limits.d/clickhouse.conf"
+
 
 #=================================================
 # END OF SCRIPT

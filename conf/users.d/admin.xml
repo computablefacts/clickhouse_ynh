@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<yandex>
+    <users>
+        <__ADMIN__>
+            <password_sha256_hex>__PASSWORD_SHA256_HEX__</password_sha256_hex>
+            <access_management>1</access_management>
+            <named_collection_control>1</named_collection_control>
+            <show_named_collections>1</show_named_collections>
+            <show_named_collections_secrets>1</show_named_collections_secrets>
+            <profile>restricted</profile>
+            <quota>unlimited</quota>
+            <networks>
+                <ip>::/0</ip>
+            </networks>
+        </__ADMIN__>
+    </users>
+</yandex>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<yandex>
+    <http_port>__PORT__</http_port>
+    <https_port remove="remove"></https_port>
+    <grpc_port remove="remove"></grpc_port>
+    <tcp_port remove="remove"></tcp_port>
+    <tcp_port_secure>__PORT_CLICKHOUSE_SECURE__</tcp_port_secure>
+</yandex>

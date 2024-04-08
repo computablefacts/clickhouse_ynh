@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<yandex>
+    <!-- Path to data directory, with trailing slash. -->
+    <path>__DATA_DIR__/</path>
+    <!-- Directory in <clickhouse-path> containing schema files for various input formats.
+         The directory will be created if it doesn't exist.
+      -->
+    <format_schema_path>__DATA_DIR__/format_schemas/</format_schema_path>
+    <!-- Path to temporary data for processing hard queries. -->
+    <tmp_path>__DATA_DIR__/tmp/</tmp_path>
+    <!-- Directory with user provided files that are accessible by 'file' table function. -->
+    <user_files_path>__DATA_DIR__/user_files/</user_files_path>
+    <user_defined_path>__DATA_DIR__/user_defined/</user_defined_path>
+    <user_scripts_path>__DATA_DIR__/user_scripts/</user_scripts_path>
+</yandex>

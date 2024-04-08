@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<yandex>
+    <profiles>
+        <!-- <default remove="remove"></default> -->
+    </profiles>
+    <users>
+        <default remove="remove"></default>
+    </users>
+</yandex>

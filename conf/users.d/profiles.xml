@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<yandex>
+    <profiles>
+        <restricted>
+            <!-- Allows both read and write queries. -->
+            <readonly>0</readonly>
+            <!-- The maximum number of threads when running a single query. -->
+            <max_threads>6</max_threads>
+            <!-- Maximum memory usage for processing single query, in bytes. -->
+            <max_memory_usage>30000000000</max_memory_usage>
+            <!-- No query logs. See: https://theorangeone.net/posts/calming-down-clickhouse/#stop-logging-queries -->
+            <log_queries>0</log_queries>
+            <log_query_threads>0</log_query_threads>
+        </restricted>
+        <!-- <default remove="remove"></default> -->
+        <readonly>
+            <readonly>1</readonly>
+            <!-- The maximum number of threads when running a single query. -->
+            <max_threads>6</max_threads>
+            <!-- Maximum memory usage for processing single query, in bytes. -->
+            <max_memory_usage>30000000000</max_memory_usage>
+            <!-- No query logs. See: https://theorangeone.net/posts/calming-down-clickhouse/#stop-logging-queries -->
+            <log_queries>0</log_queries>
+            <log_query_threads>0</log_query_threads>
+        </readonly>
+    </profiles>
+</yandex>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<yandex>
+    <!-- Listen specified address.
+         Use :: (wildcard IPv6 address), if you want to accept connections both with IPv4 and IPv6 from everywhere.
+         Notes:
+         If you open connections from wildcard address, make sure that at least one of the following measures applied:
+         - server is protected by firewall and not accessible from untrusted networks;
+         - all users are restricted to subset of network addresses (see users.xml);
+         - all users have strong passwords, only secure (TLS) interfaces are accessible, or connections are only made via TLS interfaces.
+         - users without password have readonly access.
+         See also: https://www.shodan.io/search?query=clickhouse
+      -->
+    <listen_host>::</listen_host>
+    <!-- Don't exit if IPv6 or IPv4 networks are unavailable while trying to listen. -->
+    <listen_try>1</listen_try>
+</yandex>

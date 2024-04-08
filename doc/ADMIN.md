@@ -1,3 +1,2 @@
-This is a dummy admin doc for this app
-
-The app install dir is `__INSTALL_DIR__`
+HTTP port : __PORT__
+Secure ClickHouse port : __PORT_CLICKHOUSE_SECURE__
