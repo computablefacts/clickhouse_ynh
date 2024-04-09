@@ -37,11 +37,6 @@ fi
 
 ynh_remove_nginx_config
 
-# Remove other various files specific to the app... such as :
-
-ynh_secure_remove --file="/etc/cron.d/$app"
-
-
 # See: https://github.com/ClickHouse/ClickHouse/issues/38877#issuecomment-1590562695
 for file in /usr/bin/clickhouse*; do
     # Vérifier si le fichier existe
@@ -51,6 +46,7 @@ for file in /usr/bin/clickhouse*; do
     fi
 done
 ynh_secure_remove --file="/etc/clickhouse-server"
+ynh_secure_remove --file="/lib/systemd/system/clickhouse-server.service"
 ynh_secure_remove --file="/var/log/clickhouse-server"
 ynh_secure_remove --file="/var/run/clickhouse-server"
 ynh_secure_remove --file="/etc/security/limits.d/clickhouse.conf"
