@@ -7,7 +7,7 @@ name = "ClickHouse"
 description.en = "ClickHouse is the fastest and most resource efficient open-source database for real-time apps and analytics."
 description.fr = "ClickHouse est la base de données open source la plus rapide et la plus économe en ressources pour les applications et les analyses en temps réel."
 
-version = "23.8~ynh1"
+version = "23.8~ynh2"
 
 maintainers = ["pbrisacier@mncc.fr"]
 
