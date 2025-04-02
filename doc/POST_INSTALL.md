@@ -5,7 +5,7 @@ du playground.
 
 Le playground se trouve à cette URL : https://__DOMAIN____PATH__/play.
 Saisissez, en haut de la page, l'URL de ClickHouse (https://__DOMAIN____PATH__/),
-votre login (__USER__) et le mot de passe que vous avez choisi.
+votre login (__ADMIN__) et le mot de passe que vous avez choisi.
 
 Vous pouvez ensuite saisir votre requête SQL (par exemple : `SHOW DATABASES;`)
 et cliquer sur "Run" pour voir le résultat.
@@ -17,7 +17,7 @@ Vous pouvez également installer clickhouse-client.
 Vous pouvez le démarrer avec vos paramètres :
 
 ```bash
-clickhouse-client --secure --host __DOMAIN__ --port __PORT_CLICKHOUSE_SECURE__ --user __USER__
+clickhouse-client --secure --host __DOMAIN__ --port __PORT_CLICKHOUSE_SECURE__ --user __ADMIN__
 ```
 
 ClickHouse client vous demandera votre mot de passe et affichera le prompt où
@@ -37,6 +37,6 @@ En vous connectant en SFTP sur votre serveur, vous verrez un répertoire
   Voir https://clickhouse.com/docs/en/sql-reference/functions/udf
 - user_scripts : pour les scripts utilisés par les fonctions.
 
-Par exemple, vous pouvez déposerun fichier CSV `mes_donnees.csv` dans le 
+Par exemple, vous pouvez déposer un fichier CSV `mes_donnees.csv` dans le 
 répertoire `/shared/clickhouse/user_files` puis le manipuler avec des requêtes
 SQL du type `select * from file ('mes_donnees.csv', CSV)`.
