@@ -37,16 +37,23 @@ ynh_script_progression --message="Restoring system configurations related to $ap
 
 ynh_restore_file --origin_path="/etc/nginx/conf.d/$domain.d/$app.conf"
 
-ynh_restore_file --origin_path="/etc/systemd/system/$app.service"
-systemctl enable "$app.service" --quiet
+ynh_restore_file --origin_path="/lib/systemd/system/clickhouse-server.service"
+systemctl enable --quiet "clickhouse-server.service"
+
+ynh_restore_file --origin_path="/etc/systemd/system/clickhouse-restart.service"
+ynh_restore_file --origin_path="/etc/systemd/system/clickhouse-certificates.timer"
+systemctl enable --quiet "clickhouse-certificates.timer"
 
 yunohost service add "$app" --description="A short description of the app" --log="/var/log/$app/$app.log"
+yunohost service add "clickhouse-restart" --description="Clickhouse restart service" \
+    --test_status="systemctl show clickhouse-restart.service  -p ActiveState --value | grep -v failed"
+
 
 #=================================================
 # RESTORE VARIOUS FILES
 #=================================================
 
-ynh_restore_file --origin_path="/etc/$app/"
+ynh_restore_file --origin_path="/etc/clickhouse-server/"
 
 ### For apps with huge logs, you might want to not backup logs every time:
 ### The mkdir call is just here in case the log directory was not backed up.
@@ -55,14 +62,16 @@ ynh_restore_file --origin_path="/etc/$app/"
 ### ynh_restore_file --src_path="/var/log/$app/" --not_mandatory
 ###
 ### For other apps, the simple way is better:
-ynh_restore_file --origin_path="/var/log/$app/"
+ynh_restore_file --origin_path="/var/log/clickhouse-server/"
 
 #=================================================
 # RELOAD NGINX AND THE APP SERVICE
 #=================================================
 ynh_script_progression --message="Reloading NGINX web server and $app's service..." --weight=1
 
-ynh_systemd_action --service_name="$app" --action="start" --log_path="/var/log/$app/$app.log"
+ynh_systemd_action --service_name="clickhouse-server" --action="start" --log_path="/var/log/clickhouse-server/clickhouse-server.log"
+ynh_systemd_action --service_name="clickhouse-restart.service" --action="disable"
+ynh_systemd_action --service_name="clickhouse-certificates.timer" --action="start"
 
 ynh_systemd_action --service_name=nginx --action=reload
 
