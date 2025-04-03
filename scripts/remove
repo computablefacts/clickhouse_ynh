@@ -53,6 +53,7 @@ ynh_secure_remove --file="/lib/systemd/system/clickhouse-server.service"
 ynh_secure_remove --file="/var/log/clickhouse-server"
 ynh_secure_remove --file="/var/run/clickhouse-server"
 ynh_secure_remove --file="/etc/security/limits.d/clickhouse.conf"
+ynh_secure_remove --file="/home/shared/clickhouse"
 
 
 #=================================================
