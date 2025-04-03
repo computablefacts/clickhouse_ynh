@@ -148,6 +148,11 @@ mkdir -p /var/log/clickhouse-server
 chown "$app:$app" /var/log/clickhouse-server
 yunohost service add "clickhouse-server" --needs_exposed_ports "$port_clickhouse_secure" --description="ClickHouse Server" --log="/var/log/clickhouse-server/clickhouse-server.log"
 
+# Configuration for systemd timer to restart Clickhouse server
+# A restart is needed to load new LE certificates for secure port (9440)
+ynh_add_systemd_config --service="clickhouse-restart" --template="systemd_clickhouse-restart.service"
+_ynh_add_config_j2 --template="systemd_clickhouse-certificates.timer.j2" --destination="/etc/systemd/system/clickhouse-certificates.timer"
+
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
@@ -163,6 +168,15 @@ ynh_script_progression --message="Starting $app's systemd service..." --weight=1
 
 # Start a systemd service
 ynh_systemd_action --service_name="clickhouse-server" --action="start" --log_path="/var/log/clickhouse-server/clickhouse-server.log"
+
+# Enable and start systemd service and timer to restart Clickhouse server
+# A restart is needed to load new LE certificates for secure port (9440)
+ynh_systemd_action --service_name="clickhouse-restart.service" --action="disable"
+systemctl enable --quiet "clickhouse-certificates.timer"
+ynh_systemd_action --service_name="clickhouse-certificates.timer" --action="start"
+
+yunohost service add "clickhouse-restart" --description="Clickhouse restart service" \
+    --test_status="systemctl show clickhouse-restart.service  -p ActiveState --value | grep -v failed"
 
 #=================================================
 # SETUP APPLICATION WITH SQL

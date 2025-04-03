@@ -1,0 +1,6 @@
+[Unit]
+Description=Restart clickhouse service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl restart clickhouse-server.service

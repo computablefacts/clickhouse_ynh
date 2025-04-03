@@ -1,0 +1,12 @@
+[Unit]
+Description=Restart clickhouse service to load new TLS certificate if exists
+
+[Timer]
+Persistant=true
+OnCalendar=minutely
+#OnActiveSec=60
+#RandomizedDelaySec=1h
+Unit=clickhouse-restart.service
+
+[Install]
+WantedBy=timers.target
