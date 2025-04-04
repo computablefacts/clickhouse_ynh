@@ -37,8 +37,8 @@ ynh_script_progression --message="Restoring system configurations related to $ap
 
 ynh_restore_file --origin_path="/etc/nginx/conf.d/$domain.d/$app.conf"
 
-ynh_restore_file --origin_path="/lib/systemd/system/clickhouse-server.service"
-systemctl enable --quiet "clickhouse-server.service"
+# ynh_restore_file --origin_path="/lib/systemd/system/clickhouse-server.service"
+# systemctl enable --quiet "clickhouse-server.service"
 
 ynh_restore_file --origin_path="/etc/systemd/system/clickhouse-restart.service"
 ynh_restore_file --origin_path="/etc/systemd/system/clickhouse-certificates.timer"

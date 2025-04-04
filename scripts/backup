@@ -39,7 +39,10 @@ ynh_backup --src_path="$data_dir" --is_big
 ynh_backup --src_path="/etc/nginx/conf.d/$domain.d/$app.conf"
 
 # Backup the systemd service unit
-ynh_backup --src_path="/lib/systemd/system/clickhouse-server.service"
+# For this one, YunoHost backup /usr/lib/systemd/system/clickhouse-server.service (it adds /usr prefix)
+# I do not understand why (may be to protect system path /lib ?) so I decide to not backup this file
+# So not restore it, not delete it, etc
+#ynh_backup --src_path="/lib/systemd/system/clickhouse-server.service"
 ynh_backup --src_path="/etc/systemd/system/clickhouse-restart.service"
 ynh_backup --src_path="/etc/systemd/system/clickhouse-certificates.timer"
 

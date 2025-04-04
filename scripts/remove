@@ -35,9 +35,10 @@ if ynh_exec_warn_less yunohost service status "clickhouse-restart" >/dev/null; t
     yunohost service remove "clickhouse-server"
     ynh_systemd_action --service_name="clickhouse-server.service" --action="stop"
     systemctl disable --quiet "clickhouse-server.service"
-    ynh_secure_remove --file="/etc/systemd/system/clickhouse-restart.service"
+
     yunohost service remove "clickhouse-restart"
     ynh_secure_remove --file="/etc/systemd/system/clickhouse-restart.service"
+
     ynh_systemd_action --service_name="clickhouse-certificates.timer" --action="stop"
     systemctl disable --quiet "clickhouse-certificates.timer"
     ynh_secure_remove --file="/etc/systemd/system/clickhouse-certificates.timer"
@@ -54,7 +55,7 @@ for file in /usr/bin/clickhouse*; do
     fi
 done
 ynh_secure_remove --file="/etc/clickhouse-server"
-ynh_secure_remove --file="/lib/systemd/system/clickhouse-server.service"
+# ynh_secure_remove --file="/lib/systemd/system/clickhouse-server.service"
 ynh_secure_remove --file="/var/log/clickhouse-server"
 ynh_secure_remove --file="/var/run/clickhouse-server"
 ynh_secure_remove --file="/etc/security/limits.d/clickhouse.conf"
