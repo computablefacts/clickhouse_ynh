@@ -171,7 +171,6 @@ ynh_systemd_action --service_name="clickhouse-server" --action="start" --log_pat
 
 # Enable and start systemd service and timer to restart Clickhouse server
 # A restart is needed to load new LE certificates for secure port (9440)
-ynh_systemd_action --service_name="clickhouse-restart.service" --action="disable"
 systemctl enable --quiet "clickhouse-certificates.timer"
 ynh_systemd_action --service_name="clickhouse-certificates.timer" --action="start"
 
