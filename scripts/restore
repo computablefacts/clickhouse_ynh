@@ -20,6 +20,11 @@ ynh_restore_file --origin_path="$install_dir"
 ### ownership to all files such as after the ynh_setup_source step
 chown -R "$app:www-data" "$install_dir"
 
+# I reapply clickhouse install scripts
+$install_dir/common-static/install/doinst.sh
+$install_dir/server/install/doinst.sh
+$install_dir/client/install/doinst.sh
+
 #=================================================
 # RESTORE THE DATA DIRECTORY
 #=================================================
