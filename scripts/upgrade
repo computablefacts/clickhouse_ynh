@@ -34,6 +34,7 @@ source /usr/share/yunohost/helpers
 ynh_script_progression --message="Stopping $app's systemd service..." --weight=1
 
 ynh_systemd_action --service_name="$app" --action="stop" --log_path="/var/log/$app/$app.log"
+ynh_systemd_action --service_name="clickhouse-certificates.timer" --action="stop"
 
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
@@ -61,13 +62,39 @@ ynh_systemd_action --service_name="$app" --action="stop" --log_path="/var/log/$a
 #=================================================
 ynh_script_progression --message="Upgrading source files..." --weight=1
 
+# See: https://clickhouse.com/docs/en/install#from-tgz-archives
+# NOTA: I do not install clickhouse-common-static-dbg that seams not mandatory
 # Download, check integrity, uncompress and patch the source from manifest.toml
-ynh_setup_source --dest_dir="$install_dir"
+ynh_setup_source --source_id=common-static --dest_dir="$install_dir/common-static"
+ynh_setup_source --source_id=server --dest_dir="$install_dir/server"
+ynh_setup_source --source_id=client --dest_dir="$install_dir/client"
 
 ### $install_dir will automatically be initialized with some decent
-### permissions by default ... however, you may need to recursively reapply
+### permission by default ... however, you may need to recursively reapply
 ### ownership to all files such as after the ynh_setup_source step
 chown -R "$app:www-data" "$install_dir"
+
+# Create a shared SFTP directory
+mkdir -p /home/shared/clickhouse
+# Create user directories and link them to data_dir
+mkdir -p /home/shared/clickhouse/user_files
+ln -s /home/shared/clickhouse/user_files $data_dir/user_files
+chown "$app:$app" "/home/shared/clickhouse/user_files"
+mkdir -p /home/shared/clickhouse/user_defined
+ln -s /home/shared/clickhouse/user_defined $data_dir/user_defined
+chown "$app:$app" "/home/shared/clickhouse/user_defined"
+mkdir -p /home/shared/clickhouse/user_scripts
+ln -s /home/shared/clickhouse/user_scripts $data_dir/user_scripts
+chown "$app:$app" "/home/shared/clickhouse/user_scripts"
+
+chmod -R 777 /home/shared/clickhouse
+
+$install_dir/common-static/install/doinst.sh
+$install_dir/server/install/doinst.sh
+$install_dir/client/install/doinst.sh
+
+# Needed to give read access to YunoHost SSL certificates for the domain
+usermod -a -G ssl-cert $app
 
 #=================================================
 # UPDATE A CONFIG FILE
@@ -79,13 +106,26 @@ ynh_script_progression --message="Updating $app's configuration files..." --weig
 ### The file will automatically be backed-up if it's found to be manually modified (because
 ### ynh_add_config keeps track of the file's checksum)
 
-ynh_add_config --template="some_config_file" --destination="$install_dir/some_config_file"
+chown "$app:$app" "/etc/clickhouse-server/config.xml"
+mkdir -p "/etc/clickhouse-server/config.d/"
+chown "$app:$app" "/etc/clickhouse-server/config.d/"
+ynh_add_config --template="config.d/00-remove-unused-parts.xml" --destination="/etc/clickhouse-server/config.d/00-remove-unused-parts.xml"
+ynh_add_config --template="config.d/ldap.xml" --destination="/etc/clickhouse-server/config.d/ldap.xml"
+ynh_add_config --template="config.d/listen.xml" --destination="/etc/clickhouse-server/config.d/listen.xml"
+ynh_add_config --template="config.d/logger.xml" --destination="/etc/clickhouse-server/config.d/logger.xml"
+ynh_add_config --template="config.d/openSSL.xml" --destination="/etc/clickhouse-server/config.d/openSSL.xml"
+ynh_add_config --template="config.d/paths.xml" --destination="/etc/clickhouse-server/config.d/paths.xml"
+ynh_add_config --template="config.d/remove-log-tables.xml" --destination="/etc/clickhouse-server/config.d/remove-log-tables.xml"
+ynh_add_config --template="config.d/tcp_port_secure.xml" --destination="/etc/clickhouse-server/config.d/tcp_port_secure.xml"
+ynh_add_config --template="config.d/user_directories.xml" --destination="/etc/clickhouse-server/config.d/user_directories.xml"
 
-# FIXME: this should be handled by the core in the future
-### You may need to use chmod 600 instead of 400,
-### for example if the app is expected to be able to modify its own config
-chmod 400 "$install_dir/some_config_file"
-chown "$app:$app" "$install_dir/some_config_file"
+chown "$app:$app" "/etc/clickhouse-server/users.xml"
+mkdir -p "/etc/clickhouse-server/users.d/"
+chown "$app:$app" "/etc/clickhouse-server/users.d/"
+ynh_add_config --template="users.d/00-remove-unused-parts.xml" --destination="/etc/clickhouse-server/users.d/00-remove-unused-parts.xml"
+ynh_add_config --template="users.d/admin.xml" --destination="/etc/clickhouse-server/users.d/admin.xml"
+ynh_add_config --template="users.d/profiles.xml" --destination="/etc/clickhouse-server/users.d/profiles.xml"
+ynh_add_config --template="users.d/quotas.xml" --destination="/etc/clickhouse-server/users.d/quotas.xml"
 
 ### For more complex cases where you want to replace stuff using regexes,
 ### you shoud rely on ynh_replace_string (which is basically a wrapper for sed)
@@ -103,16 +143,28 @@ ynh_script_progression --message="Upgrading system configurations related to $ap
 
 ynh_add_nginx_config
 
-ynh_add_systemd_config
+mkdir -p /var/log/clickhouse-server
+chown "$app:$app" /var/log/clickhouse-server
+#yunohost service add "clickhouse-server" --needs_exposed_ports "$port_clickhouse_secure" --description="ClickHouse Server" --log="/var/log/clickhouse-server/clickhouse-server.log"
 
-yunohost service add "$app" --description="A short description of the app" --log="/var/log/$app/$app.log"
+# Configuration for systemd timer to restart Clickhouse server
+# A restart is needed to load new LE certificates for secure port (9440)
+ynh_add_systemd_config --service="clickhouse-restart" --template="systemd_clickhouse-restart.service"
+_ynh_add_config_j2 --template="systemd_clickhouse-certificates.timer.j2" --destination="/etc/systemd/system/clickhouse-certificates.timer"
+
+#yunohost service add "$app" --description="A short description of the app" --log="/var/log/$app/$app.log"
 
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
 ynh_script_progression --message="Starting $app's systemd service..." --weight=1
 
-ynh_systemd_action --service_name="$app" --action="start" --log_path="/var/log/$app/$app.log"
+# Start a systemd service
+ynh_systemd_action --service_name="clickhouse-server" --action="start" --log_path="/var/log/clickhouse-server/clickhouse-server.log"
+
+# Enable and start systemd service and timer to restart Clickhouse server
+# A restart is needed to load new LE certificates for secure port (9440)
+ynh_systemd_action --service_name="clickhouse-certificates.timer" --action="start"
 
 #=================================================
 # END OF SCRIPT
