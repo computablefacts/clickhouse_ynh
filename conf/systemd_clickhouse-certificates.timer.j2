@@ -2,7 +2,7 @@
 Description=Restart clickhouse service to load new TLS certificate if exists
 
 [Timer]
-Persistant=true
+Persistent=true
 OnCalendar=Sun *-*-* 01:00:00
 RandomizedDelaySec=1h
 Unit=clickhouse-restart.service
