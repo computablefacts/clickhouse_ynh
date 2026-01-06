@@ -7,7 +7,7 @@ name = "ClickHouse"
 description.en = "ClickHouse is the fastest and most resource efficient open-source database for real-time apps and analytics."
 description.fr = "ClickHouse est la base de données open source la plus rapide et la plus économe en ressources pour les applications et les analyses en temps réel."
 
-version = "23.8~ynh3"
+version = "25.8~ynh1"
 
 maintainers = ["pbrisacier@mncc.fr"]
 
@@ -75,19 +75,19 @@ ram.runtime = "1G"
     [resources.sources]
 
     [resources.sources.common-static]
-    amd64.url = "https://packages.clickhouse.com/tgz/lts/clickhouse-common-static-23.3.22.3-amd64.tgz"
+    amd64.url = "https://packages.clickhouse.com/tgz/lts/clickhouse-common-static-25.8.12.129-amd64.tgz"
     amd64.sha256 = "46a0c6a2842315b750cc3bd1f9eba6b59ab2758595f7e8452814940d3f832360"
 
     #[resources.sources.common-static-dbg]
-    #amd64.url = "https://packages.clickhouse.com/tgz/lts/clickhouse-common-static-dbg-23.3.22.3-amd64.tgz"
+    #amd64.url = "https://packages.clickhouse.com/tgz/lts/clickhouse-common-static-dbg-25.8.12.129-amd64.tgz"
     #amd64.sha256 = "4c7c0ea6252b95662aeb00c436c8eb33f04e7d9961d97291286a28ca6a314acb"
 
     [resources.sources.server]
-    amd64.url = "https://packages.clickhouse.com/tgz/lts/clickhouse-server-23.3.22.3-amd64.tgz"
+    amd64.url = "https://packages.clickhouse.com/tgz/lts/clickhouse-server-25.8.12.129-amd64.tgz"
     amd64.sha256 = "fad0ef056785263d7c7cb63bf484fba46aebea3e7e30aff803d503070400ebe2"
 
     [resources.sources.client]
-    amd64.url = "https://packages.clickhouse.com/tgz/lts/clickhouse-client-23.3.22.3-amd64.tgz"
+    amd64.url = "https://packages.clickhouse.com/tgz/lts/clickhouse-client-25.8.12.129-amd64.tgz"
     amd64.sha256 = "b5f52d12a322acfa13066801d195b5fc04e66df467befec908c1d486d8c7565e"
 
 
