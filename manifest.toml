@@ -76,19 +76,19 @@ ram.runtime = "1G"
 
     [resources.sources.common-static]
     amd64.url = "https://packages.clickhouse.com/tgz/lts/clickhouse-common-static-25.8.12.129-amd64.tgz"
-    amd64.sha256 = "46a0c6a2842315b750cc3bd1f9eba6b59ab2758595f7e8452814940d3f832360"
+    amd64.sha256 = "9fd023ffc2446ba00d817bd8cfadfbfd6d161b5710e0a8c4ab5e7a76f8a84b39"
 
     #[resources.sources.common-static-dbg]
     #amd64.url = "https://packages.clickhouse.com/tgz/lts/clickhouse-common-static-dbg-25.8.12.129-amd64.tgz"
-    #amd64.sha256 = "4c7c0ea6252b95662aeb00c436c8eb33f04e7d9961d97291286a28ca6a314acb"
+    #amd64.sha256 = "a79986e98f8a45545891e63b69566fd7cba3c5e02c084353145d380d3e9a23c8"
 
     [resources.sources.server]
     amd64.url = "https://packages.clickhouse.com/tgz/lts/clickhouse-server-25.8.12.129-amd64.tgz"
-    amd64.sha256 = "fad0ef056785263d7c7cb63bf484fba46aebea3e7e30aff803d503070400ebe2"
+    amd64.sha256 = "74a02e1caef5653d4f0ec68ad3217e4643aee504fd130d7841226efde6a2a3bc"
 
     [resources.sources.client]
     amd64.url = "https://packages.clickhouse.com/tgz/lts/clickhouse-client-25.8.12.129-amd64.tgz"
-    amd64.sha256 = "b5f52d12a322acfa13066801d195b5fc04e66df467befec908c1d486d8c7565e"
+    amd64.sha256 = "a64d3c341f98249215a5fd8f5ade151e2e5fb2d066b239611d628709f0737e7b"
 
 
     [resources.system_user]

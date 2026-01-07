@@ -185,7 +185,7 @@ ynh_script_progression --message="Finalizing installation..." --weight=1
 
 clickhouse-client --secure --port $port_clickhouse_secure --user $admin --password $password --query "CREATE ROLE IF NOT EXISTS ldap_user_role SETTINGS PROFILE 'readonly'"
 clickhouse-client --secure --port $port_clickhouse_secure --user $admin --password $password --query "GRANT ALL ON *.* TO ldap_user_role"
-clickhouse-client --secure --port $port_clickhouse_secure --user $admin --password $password --query "CREATE QUOTA ldap_limited KEYED BY user_name FOR INTERVAL 1 hour MAX queries = 1000, FOR INTERVAL 1 day MAX queries = 10000 TO ldap_user_role"
+clickhouse-client --secure --port $port_clickhouse_secure --user $admin --password $password --query "CREATE QUOTA IF NOT EXISTS ldap_limited KEYED BY user_name FOR INTERVAL 1 hour MAX queries = 1000, FOR INTERVAL 1 day MAX queries = 10000 TO ldap_user_role"
 
 #=================================================
 # END OF SCRIPT
